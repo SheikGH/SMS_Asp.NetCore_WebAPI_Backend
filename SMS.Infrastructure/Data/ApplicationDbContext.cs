@@ -21,7 +21,7 @@ namespace SMS.Infrastructure.Data
         public DbSet<Relationship> Relationships { get; set; }
         public DbSet<StudentNationality> StudentNationalities { get; set; }
         public DbSet<FamilyMemberNationality> FamilyMemberNationalities { get; set; }
-           
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure relationships
@@ -58,6 +58,8 @@ namespace SMS.Infrastructure.Data
             //    .WithMany(n => n.FamilyMemberNationalities);
             //    //.HasForeignKey(sn => sn.NationalityId);
 
+            modelBuilder.Entity<Student>().HasKey(s => s.ID); // Primary Key
+            modelBuilder.Entity<Student>().Property(s => s.ID).ValueGeneratedOnAdd(); // Identity column
             // Seed data
             modelBuilder.Entity<Nationality>().HasData(
                     new Nationality { ID = 1, Name = "Afghanistan", Code = "AF" },
@@ -313,7 +315,7 @@ namespace SMS.Infrastructure.Data
             );
 
             modelBuilder.Entity<StudentNationality>().HasData(
-                new StudentNationality { ID = 1, NationalityId = 1, StudentId = 1},
+                new StudentNationality { ID = 1, NationalityId = 1, StudentId = 1 },
                 new StudentNationality { ID = 2, NationalityId = 5, StudentId = 2 },
                 new StudentNationality { ID = 3, NationalityId = 97, StudentId = 3 },
                 new StudentNationality { ID = 4, NationalityId = 40, StudentId = 4 },
@@ -334,7 +336,7 @@ namespace SMS.Infrastructure.Data
                 new Student { ID = 1, FirstName = "John", LastName = "Doe", DateOfBirth = new DateTime(2000, 3, 15), Status = "Active" },
                 new Student { ID = 2, FirstName = "Jane", LastName = "Smith", DateOfBirth = new DateTime(1983, 1, 11), Status = "Active" },
                 new Student { ID = 3, FirstName = "Leanne", LastName = "Graham", DateOfBirth = new DateTime(2010, 7, 1), Status = "Active" },
-                new Student { ID = 4, FirstName = "Dennis", LastName = "Schulist", DateOfBirth = new DateTime(1798, 12, 31), Status = "Active"},
+                new Student { ID = 4, FirstName = "Dennis", LastName = "Schulist", DateOfBirth = new DateTime(1798, 12, 31), Status = "Active" },
                 new Student { ID = 5, FirstName = "Glenna", LastName = "Reichert", DateOfBirth = new DateTime(2000, 10, 19), Status = "Active" },
                 new Student { ID = 6, FirstName = "Ervin", LastName = "Howell", DateOfBirth = new DateTime(2004, 4, 24), Status = "Active" }
             );

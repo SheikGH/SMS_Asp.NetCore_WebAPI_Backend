@@ -8,11 +8,8 @@
 
   <ItemGroup>
     <Compile Remove="DTOs\**" />
-    <Compile Remove="NewFolder\**" />
     <EmbeddedResource Remove="DTOs\**" />
-    <EmbeddedResource Remove="NewFolder\**" />
     <None Remove="DTOs\**" />
-    <None Remove="NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>

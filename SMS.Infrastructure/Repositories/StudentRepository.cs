@@ -24,7 +24,7 @@ namespace SMS.Infrastructure.Repositories
         #region Students
         public async Task<IEnumerable<Student>> GetStudentsAsync()
         {
-            return await _context.Students.ToArrayAsync();
+            return await _context.Students.ToListAsync();
         }
         public async Task<IEnumerable<StudentResDto>> GetStudentsWithNationalityAsync()
         {
@@ -45,7 +45,7 @@ namespace SMS.Infrastructure.Repositories
                         FirstName = combined.student.FirstName,
                         LastName = combined.student.LastName,
                         DateOfBirth = combined.student.DateOfBirth,
-                        //Status = student.Status,
+                        Status = combined.student.Status,
                         NationalityId = nationality.ID,
                         NationalityName = nationality.Name,
                     }
@@ -80,6 +80,7 @@ namespace SMS.Infrastructure.Repositories
         {
             var student = new Student
             {
+                ID = studentReqDto.ID,
                 FirstName = studentReqDto.FirstName,
                 LastName = studentReqDto.LastName,
                 DateOfBirth = studentReqDto.DateOfBirth,
@@ -87,9 +88,11 @@ namespace SMS.Infrastructure.Repositories
             };
             await _context.Students.AddAsync(student);
             await _context.SaveChangesAsync();
-
+            //var latestStudent = await _context.Students.OrderByDescending(s => s.ID).FirstOrDefaultAsync();
+            //var studentID = student.ID > 0 ? student.ID : latestStudent.ID;
             await _context.StudentNationalities.AddAsync(new StudentNationality() { NationalityId = studentReqDto.NationalityId, StudentId = student.ID });
-            //await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            //student.ID = student.ID > 0 ? student.ID : studentID;
             return student;
         }
 
@@ -144,6 +147,7 @@ namespace SMS.Infrastructure.Repositories
                 _context.Students.Update(student);
                 _context.Entry(student).State = EntityState.Modified;
                 _context.Entry(student).Property(s => s.Status).IsModified = true;
+                await _context.SaveChangesAsync();
 
             }
             return student;
@@ -168,7 +172,7 @@ namespace SMS.Infrastructure.Repositories
                         FirstName = combined.student.FirstName,
                         LastName = combined.student.LastName,
                         DateOfBirth = combined.student.DateOfBirth,
-                        //Status = student.Status,
+                        Status = combined.student.Status,
                         NationalityId = nationality.ID,
                         NationalityName = nationality.Name,
                     }

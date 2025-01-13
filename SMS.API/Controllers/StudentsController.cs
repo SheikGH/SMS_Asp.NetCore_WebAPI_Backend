@@ -55,8 +55,8 @@ namespace SMS.API.Controllers
         [HttpPost]
         public async Task<ActionResult<StudentResDto>> CreateStudent(StudentReqDto studentReqDto)
         {
-            await _studentService.AddStudentAsync(studentReqDto);
-            return CreatedAtAction(nameof(GetStudentById), new { id = studentReqDto.ID }, studentReqDto);
+            var studentResDto = await _studentService.AddStudentAsync(studentReqDto);
+            return CreatedAtAction(nameof(GetStudentById), new { id = studentResDto.ID }, studentResDto);
         }
 
         /// <summary>
@@ -82,8 +82,8 @@ namespace SMS.API.Controllers
             return NoContent();
         }
 
-        [HttpPut("ApproveStudent/{id}")]
-        public async Task<IActionResult> ApproveStudent(int id)
+        [HttpGet("ApproveStudent/{id}")]
+        public async Task<ActionResult<StudentResDto>> ApproveStudent(int id)
         {
             var approvedStudent = await _studentService.ApproveStudentAsync(id);
             if (approvedStudent == null)
@@ -154,8 +154,8 @@ namespace SMS.API.Controllers
         public async Task<ActionResult<FamilyMember>> AddFamilyMemberWithStudentAsync(int id, FamilyMemberReqDto familyMember)
         {
             familyMember.StudentId = id;
-            var newStudent = await _studentService.AddFamilyMemberWithStudentAsync(familyMember);
-            return CreatedAtAction(nameof(GetStudentById), new { id = newStudent.ID }, newStudent);
+            var newFamilyMember = await _studentService.AddFamilyMemberWithStudentAsync(familyMember);
+            return Ok(newFamilyMember);// CreatedAtAction(nameof(GetFamilyMemberBySIdAsync), new { id = newFamilyMember.StudentId }, newFamilyMember);
         }
         #endregion
     }

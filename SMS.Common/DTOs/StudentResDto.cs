@@ -12,6 +12,7 @@ namespace SMS.Common.DTOs
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public string? Status { get; set; }
         public int? NationalityId { get; set; }
         public string? NationalityName { get; set; }
         public List<NationalityDto>? Nationalities { get; set; }

@@ -43,9 +43,9 @@ namespace SMS.Application.Services
         }
         public async Task<StudentResDto> AddStudentAsync(StudentReqDto studentReqDto)
         {
-            await _unitOfWork.Students.AddStudentAsync(studentReqDto);
-            await _unitOfWork.CompleteAsync();
-            return _mapper.Map<StudentResDto>(studentReqDto);
+            var result = await _unitOfWork.Students.AddStudentAsync(studentReqDto);
+            //await _unitOfWork.CompleteAsync();
+            return _mapper.Map<StudentResDto>(result);
         }
 
         public async Task<StudentResDto> UpdateStudentAsync(StudentReqDto studentReqDto)
@@ -64,17 +64,9 @@ namespace SMS.Application.Services
         }
         public async Task<StudentResDto> GetStudentNationalityByIdAsync(int id)
         {
-            var student = await _unitOfWork.Students.GetStudentNationalityByIdAsync(id);
-            var nationality = await _unitOfWork.Nationalities.GetStudentNationalityByIdAsync(id);
+            var studentResDto = await _unitOfWork.Students.GetStudentNationalityByIdAsync(id);
+            //var nationality = await _unitOfWork.Nationalities.GetStudentNationalityByIdAsync(id);
             //var studentResDto = _mapper.Map<StudentResDto>(student);
-            var studentResDto = new StudentResDto()
-            {
-                FirstName = student.FirstName,
-                LastName = student.LastName,
-                DateOfBirth = student.DateOfBirth,
-                NationalityId = nationality.ID,
-                NationalityName = nationality.Name
-            };
             return studentResDto;
         }
         /// <summary>
@@ -105,10 +97,10 @@ namespace SMS.Application.Services
         }
         public async Task<FamilyMemberResDto> AddFamilyMemberWithStudentAsync(FamilyMemberReqDto familyMemberReqDto)
         {
-            var familyMember = _mapper.Map<FamilyMember>(familyMemberReqDto);
-            await _unitOfWork.Students.AddFamilyMemberWithStudentAsync(familyMemberReqDto);
+            //var familyMember = _mapper.Map<FamilyMember>(familyMemberReqDto);
+            var result = await _unitOfWork.Students.AddFamilyMemberWithStudentAsync(familyMemberReqDto);
             await _unitOfWork.CompleteAsync();
-            return _mapper.Map<FamilyMemberResDto>(familyMember);
+            return _mapper.Map<FamilyMemberResDto>(result);
         }
 
         #endregion
